@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Confirmation</title>
+    <style>
+        /* Your CSS styling here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ticket Confirmation</h1>
+        <p>Your payment was successful!</p>
+        <p>From: <span id="from-location"></span></p>
+        <p>To: <span id="to-location"></span></p>
+        <p>Amount Paid: ₹<span id="amount-paid"></span></p>
+        <p>Your ticket ID is: <span id="ticket-id"></span></p>
+    </div>
+    <script>
+        // Fetch data from URL or server to display ticket details
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('from-location').textContent = urlParams.get('from');
+        document.getElementById('to-location').textContent = urlParams.get('to');
+        document.getElementById('amount-paid').textContent = urlParams.get('amount');
+
+        // Generate a simple ticket ID (in a real scenario, this would be done on the server)
+        document.getElementById('ticket-id').textContent = 'TKT' + Math.floor(Math.random() * 100000);
+    </script>
+</body>
+</html>

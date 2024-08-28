@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .ticket, .payment {
+            margin-bottom: 20px;
+        }
+        .ticket p, .payment p {
+            margin: 10px 0;
+        }
+        .ticket span, .payment input {
+            font-weight: bold;
+        }
+        .payment img {
+            display: block;
+            margin: 20px auto;
+        }
+        #confirmationMessage {
+            color: #4CAF50;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function displayTicket() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const from = urlParams.get('from');
+            const to = urlParams.get('to');
+            const amount = urlParams.get('amount');
+            const upiId = "singamsubashsa@okaxis"; // Replace with your actual UPI ID
+
+            // Set the ticket details
+            document.getElementById('from').textContent = from;
+            document.getElementById('to').textContent = to;
+            document.getElementById('fare').textContent = amount;
+
+            // Generate QR code URL with the amount included
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodeURIComponent(amount)}&cu=INR`;
+
+            document.getElementById('qrCode').src = qrCodeUrl;
+            document.getElementById('upiId').value = upiId;
+
+            // Display confirmation message
+            document.getElementById('confirmationMessage').textContent = `Please scan the QR code to pay ₹${amount}. The amount will be filled automatically in your payment app. After payment, your ticket will be generated.`;
+        }
+
+        window.onload = displayTicket;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Page</h1>
+        <div class="ticket">
+            <h2>Ticket Details</h2>
+            <p><strong>FROM:</strong> <span id="from"></span></p>
+            <p><strong>TO:</strong> <span id="to"></span></p>
+            <p><strong>FARE:</strong> <span id="fare"></span></p>
+        </div>
+        <div class="payment">
+            <h2>Payment Details</h2>
+            <p><strong>UPI ID:</strong> <input type="text" id="upiId" readonly></p>
+            <img id="qrCode" alt="QR Code">
+        </div>
+        <div id="confirmationMessage"></div>
+    </div>
+</body>
+</html>

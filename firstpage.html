@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BUSFARE</title>
+    <link rel="stylesheet" href="C:\Users\lucif\Desktop\projcet rejection\html\firstpage.css">
+    <script>
+        const fareChart = {
+            "GHANDHIPURAM-SIVANTHACOLONY": 10,
+            "GHANDHIPURAM-SAIBABAKOVIL/PUDHUBUSSTAND": 15,
+            "GHANDHIPURAM-SAIBABA COLONY": 12,
+            "GHANDHIPURAM-P AND T QUARTUS": 18,
+            "GHANDHIPURAM-VENKITAPURM": 20,
+            "GHANDHIPURAM-GCT": 25,
+            "GHANDHIPURAM-LOLY ROAD": 30,
+            "GHANDHIPURAM-AGRICULTURE COLLEGE": 35,
+            "GHANDHIPURAM-BHARATHIYAR UNIVERSITY": 40,
+            "GHANDHIPURAM-ANNA UNIVERSITY": 45,
+            "GHANDHIPURAM-VADAVALI": 50,
+            "GHANDHIPURAM-LAW COLLEGE": 55,
+            "GHANDHIPURAM-MARUTHAMALI": 60,
+
+            "SIVANTHACOLONY-SAIBABAKOVIL/PUDHUBUSSTAND": 8,
+            "SIVANTHACOLONY-SAIBABA COLONY": 6,
+            "SIVANTHACOLONY-P AND T QUARTUS": 12,
+            "SIVANTHACOLONY-VENKITAPURM": 14,
+            "SIVANTHACOLONY-GCT": 19,
+            "SIVANTHACOLONY-LOLY ROAD": 24,
+            "SIVANTHACOLONY-AGRICULTURE COLLEGE": 29,
+            "SIVANTHACOLONY-BHARATHIYAR UNIVERSITY": 34,
+            "SIVANTHACOLONY-ANNA UNIVERSITY": 39,
+            "SIVANTHACOLONY-VADAVALI": 44,
+            "SIVANTHACOLONY-LAW COLLEGE": 49,
+            "SIVANTHACOLONY-MARUTHAMALI": 54,
+
+            "SAIBABAKOVIL/PUDHUBUSSTAND-SAIBABA COLONY": 5,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-P AND T QUARTUS": 10,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-VENKITAPURM": 15,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-GCT": 20,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-LOLY ROAD": 25,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-AGRICULTURE COLLEGE": 30,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-BHARATHIYAR UNIVERSITY": 35,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-ANNA UNIVERSITY": 40,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-VADAVALI": 45,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-LAW COLLEGE": 50,
+            "SAIBABAKOVIL/PUDHUBUSSTAND-MARUTHAMALI": 55,
+
+            "SAIBABA COLONY-P AND T QUARTUS": 8,
+            "SAIBABA COLONY-VENKITAPURM": 10,
+            "SAIBABA COLONY-GCT": 15,
+            "SAIBABA COLONY-LOLY ROAD": 20,
+            "SAIBABA COLONY-AGRICULTURE COLLEGE": 25,
+            "SAIBABA COLONY-BHARATHIYAR UNIVERSITY": 30,
+            "SAIBABA COLONY-ANNA UNIVERSITY": 35,
+            "SAIBABA COLONY-VADAVALI": 40,
+            "SAIBABA COLONY-LAW COLLEGE": 45,
+            "SAIBABA COLONY-MARUTHAMALI": 50,
+
+            "P AND T QUARTUS-VENKITAPURM": 6,
+            "P AND T QUARTUS-GCT": 10,
+            "P AND T QUARTUS-LOLY ROAD": 15,
+            "P AND T QUARTUS-AGRICULTURE COLLEGE": 20,
+            "P AND T QUARTUS-BHARATHIYAR UNIVERSITY": 25,
+            "P AND T QUARTUS-ANNA UNIVERSITY": 30,
+            "P AND T QUARTUS-VADAVALI": 35,
+            "P AND T QUARTUS-LAW COLLEGE": 40,
+            "P AND T QUARTUS-MARUTHAMALI": 45,
+
+            "VENKITAPURM-GCT": 7,
+            "VENKITAPURM-LOLY ROAD": 12,
+            "VENKITAPURM-AGRICULTURE COLLEGE": 17,
+            "VENKITAPURM-BHARATHIYAR UNIVERSITY": 22,
+            "VENKITAPURM-ANNA UNIVERSITY": 27,
+            "VENKITAPURM-VADAVALI": 32,
+            "VENKITAPURM-LAW COLLEGE": 37,
+            "VENKITAPURM-MARUTHAMALI": 42,
+
+            "GCT-LOLY ROAD": 5,
+            "GCT-AGRICULTURE COLLEGE": 10,
+            "GCT-BHARATHIYAR UNIVERSITY": 15,
+            "GCT-ANNA UNIVERSITY": 20,
+            "GCT-VADAVALI": 25,
+            "GCT-LAW COLLEGE": 30,
+            "GCT-MARUTHAMALI": 35,
+
+            "LOLY ROAD-AGRICULTURE COLLEGE": 6,
+            "LOLY ROAD-BHARATHIYAR UNIVERSITY": 11,
+            "LOLY ROAD-ANNA UNIVERSITY": 16,
+            "LOLY ROAD-VADAVALI": 21,
+            "LOLY ROAD-LAW COLLEGE": 26,
+            "LOLY ROAD-MARUTHAMALI": 31,
+
+            "AGRICULTURE COLLEGE-BHARATHIYAR UNIVERSITY": 5,
+            "AGRICULTURE COLLEGE-ANNA UNIVERSITY": 10,
+            "AGRICULTURE COLLEGE-VADAVALI": 15,
+            "AGRICULTURE COLLEGE-LAW COLLEGE": 20,
+            "AGRICULTURE COLLEGE-MARUTHAMALI": 25,
+
+            "BHARATHIYAR UNIVERSITY-ANNA UNIVERSITY": 5,
+            "BHARATHIYAR UNIVERSITY-VADAVALI": 10,
+            "BHARATHIYAR UNIVERSITY-LAW COLLEGE": 15,
+            "BHARATHIYAR UNIVERSITY-MARUTHAMALI": 20,
+
+            "ANNA UNIVERSITY-VADAVALI": 5,
+            "ANNA UNIVERSITY-LAW COLLEGE": 10,
+            "ANNA UNIVERSITY-MARUTHAMALI": 15,
+
+            "VADAVALI-LAW COLLEGE": 5,
+            "VADAVALI-MARUTHAMALI": 10,
+
+            "LAW COLLEGE-MARUTHAMALI": 5,
+        };
+
+       
+        function calculateFare() {
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+            let fare = 0;
+
+            if (from && to) {
+              
+                const routeKey = `${from}-${to}`;
+                const reverseRouteKey = `${to}-${from}`;
+                
+                
+                fare = fareChart[routeKey] || fareChart[reverseRouteKey] || "N/A";
+            }
+
+            document.getElementById('amount').textContent = fare !== "N/A" ? `₹${fare}` : "Route not available";
+        }
+        function proceedToPayment() {
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+            const amount = document.getElementById('amount').textContent;
+
+            if (amount !== "Route not available" && from && to) {
+                // Redirect to payment page with query parameters
+                window.location.href = `secondpage.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&amount=${encodeURIComponent(amount)}`;
+            } else {
+                alert("Please select valid FROM and TO locations.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <center>
+        <h1>GOVERNMENT COLLEGE OF TECHNOLOGY COIMBATORE</h1>
+        <h1>BUS FARE</h1>
+        <h2>Bus no: TN 46 146</h2>
+    </center>
+    <center>
+        <form onsubmit="proceedToPayment(); return false;">
+            <table>
+                <tr>
+                    <td>FROM:</td>
+                    <td>
+                        <select id="from" onchange="calculateFare()">
+                            <option value="">Select</option>
+                            <option value="GHANDHIPURAM">GHANDHIPURAM</option>
+                            <option value="SIVANTHACOLONY">SIVANTHACOLONY</option>
+                            <option value="SAIBABAKOVIL/PUDHUBUSSTAND">SAIBABAKOVIL/PUDHUBUSSTAND</option>
+                            <option value="SAIBABA COLONY">SAIBABA COLONY</option>
+                            <option value="P AND T QUARTUS">P AND T QUARTUS</option>
+                            <option value="VENKITAPURM">VENKITAPURM</option>
+                            <option value="GCT">GCT</option>
+                            <option value="LOLY ROAD">LOLY ROAD</option>
+                            <option value="AGRICULTURE COLLEGE">AGRICULTURE COLLEGE</option>
+                            <option value="BHARATHIYAR UNIVERSITY">BHARATHIYAR UNIVERSITY</option>
+                            <option value="ANNA UNIVERSITY">ANNA UNIVERSITY</option>
+                            <option value="VADAVALI">VADAVALI</option>
+                            <option value="LAW COLLEGE">LAW COLLEGE</option>
+                            <option value="MARUTHAMALI">MARUTHAMALI</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>TO:</td>
+                    <td>
+                        <select id="to" onchange="calculateFare()">
+                            <option value="">Select</option>
+                            <option value="GHANDHIPURAM">GHANDHIPURAM</option>
+                            <option value="SIVANTHACOLONY">SIVANTHACOLONY</option>
+                            <option value="SAIBABAKOVIL/PUDHUBUSSTAND">SAIBABAKOVIL/PUDHUBUSSTAND</option>
+                            <option value="SAIBABA COLONY">SAIBABA COLONY</option>
+                            <option value="P AND T QUARTUS">P AND T QUARTUS</option>
+                            <option value="VENKITAPURM">VENKITAPURM</option>
+                            <option value="GCT">GCT</option>
+                            <option value="LOLY ROAD">LOLY ROAD</option>
+                            <option value="AGRICULTURE COLLEGE">AGRICULTURE COLLEGE</option>
+                            <option value="BHARATHIYAR UNIVERSITY">BHARATHIYAR UNIVERSITY</option>
+                            <option value="ANNA UNIVERSITY">ANNA UNIVERSITY</option>
+                            <option value="VADAVALI">VADAVALI</option>
+                            <option value="LAW COLLEGE">LAW COLLEGE</option>
+                            <option value="MARUTHAMALI">MARUTHAMALI</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AMOUNT:</td>
+                    <td><span id="amount">₹0</span></td>
+                </tr>
+                <tr>
+                    <td><input type="reset" value="Reset"></td>
+                    <td><input type="submit" value="PAY"></td>
+                </tr>
+            </table>
+        </form>
+    </center>
+</body>
+</html>
