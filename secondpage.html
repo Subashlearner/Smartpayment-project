@@ -81,10 +81,18 @@
 
         function openUPIApp(appName) {
             const urlParams = new URLSearchParams(window.location.search);
-            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
-            const upiId = "singamsubashsjsa@okaxis"; // Replace with your actual UPI ID
+            let amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
+            const upiId = "singamsubashsjsa@okaxis";
+            amount=parseFloat(amount);
+            const maxlimit=1000;
+            if(amount>1000){
+                alert("Amount is excedded");
+                return 
+            }
+            
+             // Replace with your actual UPI ID
             const encodedUPIId = encodeURIComponent(upiId);
-            const encodedAmount = encodeURIComponent(amount);
+            const encodedAmount = encodeURIComponent(amount.toString());
             let url = "";
 
             switch(appName) {
