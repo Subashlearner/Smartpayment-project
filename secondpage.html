@@ -44,13 +44,30 @@
             font-weight: bold;
             text-align: center;
         }
+        .payment-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .payment-buttons button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .payment-buttons button:hover {
+            background-color: #45a049;
+        }
     </style>
     <script>
         function displayTicket() {
             const urlParams = new URLSearchParams(window.location.search);
             const from = urlParams.get('from');
             const to = urlParams.get('to');
-            const amount = urlParams.get('amount');
+            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
             const upiId = "singamsubashsa@okaxis"; // Replace with your actual UPI ID
 
             // Set the ticket details
@@ -58,14 +75,31 @@
             document.getElementById('to').textContent = to;
             document.getElementById('fare').textContent = amount;
 
-            // Generate QR code URL with the amount included
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodeURIComponent(amount)}&cu=INR`;
-
-            document.getElementById('qrCode').src = qrCodeUrl;
-            document.getElementById('upiId').value = upiId;
-
             // Display confirmation message
-            document.getElementById('confirmationMessage').textContent = `Please scan the QR code to pay ₹${amount}. The amount will be filled automatically in your payment app. After payment, your ticket will be generated.`;
+            document.getElementById('confirmationMessage').textContent = `Please select a payment method to pay ₹${amount}. The amount will be filled automatically in your payment app. After payment, your ticket will be generated.`;
+        }
+
+        function openUPIApp(appName) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
+            const upiId = "singamsubashsa@okaxis"; // Replace with your actual UPI ID
+            const encodedUPIId = encodeURIComponent(upiId);
+            const encodedAmount = encodeURIComponent(amount);
+            let url = "";
+
+            switch(appName) {
+                case 'GooglePay':
+                    url = `upi://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+                    break;
+                case 'PhonePe':
+                    url = `phonepe://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+                    break;
+                case 'Paytm':
+                    url = `paytm://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+                    break;
+            }
+
+            window.location.href = url;  // Redirect to the UPI payment URL
         }
 
         window.onload = displayTicket;
@@ -82,8 +116,12 @@
         </div>
         <div class="payment">
             <h2>Payment Details</h2>
-            <p><strong>UPI ID:</strong> <input type="text" id="upiId" readonly></p>
-            <img id="qrCode" alt="QR Code">
+            <p><strong>Select Payment Method:</strong></p>
+            <div class="payment-buttons">
+                <button onclick="openUPIApp('GooglePay')">Google Pay</button>
+                <button onclick="openUPIApp('PhonePe')">PhonePe</button>
+                <button onclick="openUPIApp('Paytm')">Paytm</button>
+            </div>
         </div>
         <div id="confirmationMessage"></div>
     </div>
