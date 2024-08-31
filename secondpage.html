@@ -39,23 +39,25 @@
             display: block;
             margin: 20px auto;
         }
-        .payment-buttons a {
-            display: inline-block;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px;
-            transition: background-color 0.3s;
-        }
-        .payment-buttons a:hover {
-            background-color: #45a049;
-        }
         #confirmationMessage {
             color: #4CAF50;
             font-weight: bold;
             text-align: center;
+        }
+        .payment-options a {
+            display: block;
+            margin: 10px 0;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .payment-options a:hover {
+            background-color: #45a049;
         }
     </style>
     <script>
@@ -63,23 +65,26 @@
             const urlParams = new URLSearchParams(window.location.search);
             const from = urlParams.get('from');
             const to = urlParams.get('to');
-            const amount = urlParams.get('amount');
-            const upiId = "singamsubashsjsa@okaxis"; // Your actual UPI ID
+            const amount = urlParams.get('amount') ; // Fixed ₹10 amount for the payment
+            const upiId = "singamsubashsjsa@okaxis"; // Your UPI ID
 
             // Set the ticket details
             document.getElementById('from').textContent = from;
             document.getElementById('to').textContent = to;
-            document.getElementById('fare').textContent = amount;
+            document.getElementById('fare').textContent = `₹${amount}`;
 
-            // Generate UPI URLs for Google Pay, Paytm, and PhonePe with the amount included
-            const upiPaymentUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount.replace('₹', ''))}&cu=INR`;
+            // Payment links for different UPI apps
+            const googlePayLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount)}&cu=INR`;
+            const paytmLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount)}&cu=INR`;
+            const phonepeLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount)}&cu=INR`;
 
-            document.getElementById('googlePayLink').href = upiPaymentUrl;
-            document.getElementById('paytmLink').href = upiPaymentUrl;
-            document.getElementById('phonepeLink').href = upiPaymentUrl;
+            // Set the links for Google Pay, Paytm, and PhonePe
+            document.getElementById('googlePayLink').href = googlePayLink;
+            document.getElementById('paytmLink').href = paytmLink;
+            document.getElementById('phonepeLink').href = phonepeLink;
 
             // Display confirmation message
-            document.getElementById('confirmationMessage').textContent = `Please click one of the payment links below to pay ₹${amount}. The amount will be filled automatically in your UPI app.`;
+            document.getElementById('confirmationMessage').textContent = `Please click on one of the payment options to pay ₹${amount}. The amount will be pre-filled in your payment app.`;
         }
 
         window.onload = displayTicket;
@@ -96,7 +101,7 @@
         </div>
         <div class="payment">
             <h2>Payment Options</h2>
-            <div class="payment-buttons">
+            <div class="payment-options">
                 <a id="googlePayLink" href="" target="_blank">Pay with Google Pay</a>
                 <a id="paytmLink" href="" target="_blank">Pay with Paytm</a>
                 <a id="phonepeLink" href="" target="_blank">Pay with PhonePe</a>
