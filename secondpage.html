@@ -44,19 +44,21 @@
             font-weight: bold;
             text-align: center;
         }
-        .payment-options a {
-            display: block;
-            margin: 10px 0;
+        .payment-buttons {
             text-align: center;
-            text-decoration: none;
-            font-size: 18px;
+            margin-top: 20px;
+        }
+        .payment-buttons button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            border: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
         }
-        .payment-options a:hover {
+        .payment-buttons button:hover {
             background-color: #45a049;
         }
     </style>
@@ -65,26 +67,39 @@
             const urlParams = new URLSearchParams(window.location.search);
             const from = urlParams.get('from');
             const to = urlParams.get('to');
-            const amount = urlParams.get('amount') ; // Fixed ₹10 amount for the payment
-            const upiId = "singamsubashsjsa@okaxis"; // Your UPI ID
+            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
+            const upiId = "singamsubashsjsa@okaxis"; // Replace with your actual UPI ID
 
             // Set the ticket details
             document.getElementById('from').textContent = from;
             document.getElementById('to').textContent = to;
-            document.getElementById('fare').textContent = `₹${amount}`;
-
-            // Payment links for different UPI apps
-            const googlePayLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount)}&cu=INR`;
-            const paytmLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount)}&cu=INR`;
-            const phonepeLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount)}&cu=INR`;
-
-            // Set the links for Google Pay, Paytm, and PhonePe
-            document.getElementById('googlePayLink').href = googlePayLink;
-            document.getElementById('paytmLink').href = paytmLink;
-            document.getElementById('phonepeLink').href = phonepeLink;
+            document.getElementById('fare').textContent = amount;
 
             // Display confirmation message
-            document.getElementById('confirmationMessage').textContent = `Please click on one of the payment options to pay ₹${amount}. The amount will be pre-filled in your payment app.`;
+            document.getElementById('confirmationMessage').textContent = `Please select a payment method to pay ₹${amount}. The amount will be filled automatically in your payment app. After payment, your ticket will be generated.`;
+        }
+
+        function openUPIApp(appName) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
+            const upiId = "singamsubashsjsa@okaxis"; // Replace with your actual UPI ID
+            const encodedUPIId = encodeURIComponent(upiId);
+            const encodedAmount = encodeURIComponent(amount);
+            let url = "";
+
+            switch(appName) {
+                case 'GooglePay':
+                    url = `upi://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+                    break;
+                case 'PhonePe':
+                    url = `phonepe://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+                    break;
+                case 'Paytm':
+                    url = `paytm://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+                    break;
+            }
+
+            window.location.href = url;  // Redirect to the UPI payment URL
         }
 
         window.onload = displayTicket;
@@ -100,11 +115,12 @@
             <p><strong>FARE:</strong> <span id="fare"></span></p>
         </div>
         <div class="payment">
-            <h2>Payment Options</h2>
-            <div class="payment-options">
-                <a id="googlePayLink" href="" target="_blank">Pay with Google Pay</a>
-                <a id="paytmLink" href="" target="_blank">Pay with Paytm</a>
-                <a id="phonepeLink" href="" target="_blank">Pay with PhonePe</a>
+            <h2>Payment Details</h2>
+            <p><strong>Select Payment Method:</strong></p>
+            <div class="payment-buttons">
+                <button onclick="openUPIApp('GooglePay')">Google Pay</button>
+                <button onclick="openUPIApp('PhonePe')">PhonePe</button>
+                <button onclick="openUPIApp('Paytm')">Paytm</button>
             </div>
         </div>
         <div id="confirmationMessage"></div>
