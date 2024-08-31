@@ -39,27 +39,23 @@
             display: block;
             margin: 20px auto;
         }
+        .payment-buttons a {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .payment-buttons a:hover {
+            background-color: #45a049;
+        }
         #confirmationMessage {
             color: #4CAF50;
             font-weight: bold;
             text-align: center;
-        }
-        .payment-buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .payment-buttons button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .payment-buttons button:hover {
-            background-color: #45a049;
         }
     </style>
     <script>
@@ -67,39 +63,23 @@
             const urlParams = new URLSearchParams(window.location.search);
             const from = urlParams.get('from');
             const to = urlParams.get('to');
-            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
-            const upiId = "singamsubashsa@okaxis"; // Replace with your actual UPI ID
+            const amount = urlParams.get('amount');
+            const upiId = "singamsubashsjsa@okaxis"; // Your actual UPI ID
 
             // Set the ticket details
             document.getElementById('from').textContent = from;
             document.getElementById('to').textContent = to;
             document.getElementById('fare').textContent = amount;
 
+            // Generate UPI URLs for Google Pay, Paytm, and PhonePe with the amount included
+            const upiPaymentUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=SUBASH%20S&am=${encodeURIComponent(amount.replace('₹', ''))}&cu=INR`;
+
+            document.getElementById('googlePayLink').href = upiPaymentUrl;
+            document.getElementById('paytmLink').href = upiPaymentUrl;
+            document.getElementById('phonepeLink').href = upiPaymentUrl;
+
             // Display confirmation message
-            document.getElementById('confirmationMessage').textContent = `Please select a payment method to pay ₹${amount}. The amount will be filled automatically in your payment app. After payment, your ticket will be generated.`;
-        }
-
-        function openUPIApp(appName) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
-            const upiId = "singamsubashsjsa@okaxis"; // Replace with your actual UPI ID
-            const encodedUPIId = encodeURIComponent(upiId);
-            const encodedAmount = encodeURIComponent(amount);
-            let url = "";
-
-            switch(appName) {
-                case 'GooglePay':
-                    url = `upi://pay?pa=${encodedUPIId}&pn=SUBASH S%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
-                    break;
-                case 'PhonePe':
-                    url = `phonepe://pay?pa=${encodedUPIId}&pn=SUBASH S%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
-                    break;
-                case 'Paytm':
-                    url = `paytm://pay?pa=${encodedUPIId}&pn=SUBASH S%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
-                    break;
-            }
-
-            window.location.href = url;  // Redirect to the UPI payment URL
+            document.getElementById('confirmationMessage').textContent = `Please click one of the payment links below to pay ₹${amount}. The amount will be filled automatically in your UPI app.`;
         }
 
         window.onload = displayTicket;
@@ -115,12 +95,11 @@
             <p><strong>FARE:</strong> <span id="fare"></span></p>
         </div>
         <div class="payment">
-            <h2>Payment Details</h2>
-            <p><strong>Select Payment Method:</strong></p>
+            <h2>Payment Options</h2>
             <div class="payment-buttons">
-                <button onclick="openUPIApp('GooglePay')">Google Pay</button>
-                <button onclick="openUPIApp('PhonePe')">PhonePe</button>
-                <button onclick="openUPIApp('Paytm')">Paytm</button>
+                <a id="googlePayLink" href="" target="_blank">Pay with Google Pay</a>
+                <a id="paytmLink" href="" target="_blank">Pay with Paytm</a>
+                <a id="phonepeLink" href="" target="_blank">Pay with PhonePe</a>
             </div>
         </div>
         <div id="confirmationMessage"></div>
