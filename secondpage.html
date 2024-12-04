@@ -80,35 +80,38 @@
         }
 
         function openUPIApp(appName) {
-            const urlParams = new URLSearchParams(window.location.search);
-            let amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
-            const upiId = "singamsubashsjsa@okaxis";
-            amount=parseFloat(amount);
-            const maxlimit=1000;
-            if(amount>1000){
-                alert("Amount is excedded");
-                return 
-            }
-            
-             // Replace with your actual UPI ID
-            const encodedUPIId = encodeURIComponent(upiId);
-            const encodedAmount = encodeURIComponent(amount.toString());
-            let url = "";
+    const urlParams = new URLSearchParams(window.location.search);
+    let amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol from amount
+    const upiId = "singamsubashsjsa@okaxis";
+    amount = parseFloat(amount);
+    const maxlimit = 1000;
+    if (amount > maxlimit) {
+        alert("Amount exceeded");
+        return;
+    }
 
-            switch(appName) {
-                case 'GooglePay':
-                    url = `upi://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
-                    break;
-                case 'PhonePe':
-                    url = `phonepe://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
-                    break;
-                case 'Paytm':
-                    url = `paytm://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
-                    break;
-            }
+    const encodedUPIId = encodeURIComponent(upiId);
+    const encodedAmount = encodeURIComponent(amount.toString());
+    let url = "";
 
-            window.location.href = url;  // Redirect to the UPI payment URL
-        }
+    switch (appName) {
+        case 'GooglePay':
+            url = `upi://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+            break;
+        case 'PhonePe':
+            url = `phonepe://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+            break;
+        case 'Paytm':
+            url = `paytm://pay?pa=${encodedUPIId}&pn=SUBASH%20S&mc=&tid=&tr=&tn=Payment%20for%20Ticket%20Booking&am=${encodedAmount}&cu=INR`;
+            break;
+    }
+
+    // Simulate redirection to a confirmation page after payment.
+    window.location.href = `confirmation.html?from=${urlParams.get('from')}&to=${urlParams.get('to')}&amount=${amount}`;
+}
+
+
+        
 
         window.onload = displayTicket;
     </script>
