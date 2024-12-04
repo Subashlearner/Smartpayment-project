@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .details p {
+            margin: 10px 0;
+        }
+        .details span {
+            font-weight: bold;
+        }
+        .ticket-id {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .success-message {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Successful!</h1>
+        <p class="success-message">Your ticket has been successfully generated. Thank you for booking!</p>
+        <h2>Ticket Details</h2>
+        <div class="details">
+            <p><strong>FROM:</strong> <span id="from-location"></span></p>
+            <p><strong>TO:</strong> <span id="to-location"></span></p>
+            <p><strong>Amount Paid:</strong> ₹<span id="amount-paid"></span></p>
+            <p><strong>Date:</strong> <span id="ticket-date"></span></p>
+            <p><strong>Time:</strong> <span id="ticket-time"></span></p>
+            <p><strong>Ticket ID:</strong> <span class="ticket-id" id="ticket-id"></span></p>
+        </div>
+    </div>
+    <script>
+        // Fetch data from query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const from = urlParams.get('from');
+        const to = urlParams.get('to');
+        const amount = urlParams.get('amount').replace('₹', ''); // Remove ₹ symbol
+        const busNumberPlate = "TN 46 146"; // Fixed bus number plate for the example
+        const ticketCount = Math.floor(Math.random() * 100) + 1; // Simulated ticket count
+
+        // Get current date and time
+        const now = new Date();
+        const date = now.toLocaleDateString();
+        const time = now.toLocaleTimeString();
+
+        // Generate ticket ID
+        const ticketID = `${busNumberPlate.replace(/\s/g, '')}-${date.replace(/\//g, '')}-${ticketCount}`;
+
+        // Update HTML content
+        document.getElementById('from-location').textContent = from;
+        document.getElementById('to-location').textContent = to;
+        document.getElementById('amount-paid').textContent = amount;
+        document.getElementById('ticket-date').textContent = date;
+        document.getElementById('ticket-time').textContent = time;
+        document.getElementById('ticket-id').textContent = ticketID;
+    </script>
+</body>
+</html>
